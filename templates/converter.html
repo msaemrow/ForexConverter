@@ -1,0 +1,51 @@
+{% extends 'base.html' %} {% block title %}Forex Converter{% endblock %} {%
+block content %}
+<div class="form-div">
+<form action="/converted" method="POST">
+  <section class="convert-form">
+    <label for="convert-from">Convert Currency From:</label>
+    <select name="convert-from" value="" required>
+        <option value="" selected disabled hidden>Choose Currency</option>
+        {% for key in supported_currencies.keys() %}
+          {% if key == curr_from %}
+          <option value="{{key}}" selected>{{key}}</option>
+          {% else %}
+          <option value="{{key}}">{{key}}</option>
+          {% endif %}
+        {% endfor %}
+        </select>
+  </section>
+  <section class="convert-form">
+    <label for="convert-to">Convert Currency To:</label>
+    <select name="convert-to" value="{{curr_to}}" required>
+        <option value="" selected disabled hidden>Choose Currency</option>
+        {% for key in supported_currencies.keys() %}
+        {% if key == curr_to %}
+        <option value="{{key}}" selected>{{key}}</option>
+        {% else %}
+        <option value="{{key}}">{{key}}</option>
+        {% endif %}
+        {% endfor %}
+        </select>
+  </section>
+  <section class="convert-form">
+    <label for="amount">Currency Amount: <em>(up to to 2 decimals)</em></label>
+    <input type="number" value="{{curr_amount}}" name="amount" min="0" step="0.01" required/>
+  </section>
+  <button>Convert</button>
+</form>
+<h3 id="converted-amount">
+    Converted Amount: {{curr_amount}} {{curr_from}} = {{conv_amount}}
+    {{curr_to}}
+  </h3>
+</div>
+<div class="available-currencies">
+
+  <h3>Available Conversions</h3>
+  <ul>
+  {% for key, value in supported_currencies.items() %}
+    <li>{{key}}: {{value}}</li>
+  {% endfor %}
+    </ul>
+</div>
+    {% endblock %}
